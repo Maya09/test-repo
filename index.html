@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>News</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type="text/css">
+            .news{
+                width: 500px;
+                border-bottom: 1px solid black;
+                padding-top: 10px;
+                padding-left: 10px;
+            }
+            .searchStr{
+                margin-top: 20px;
+                margin-left: 10px;
+            }
+        </style>
+    </head>
+    <body>
+    <div id="container">news</div>
+    <script src="js/react.js"></script>
+    <script src="js/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+    <script type="text/babel" >
+    var NewsSearch = React.createClass({
+        getInitialState: function(){
+            return { searchString: '' };
+        },
+        handleSearch: function(e){
+            this.setState({searchString:e.target.value});
+        },
+        render: function() {
+            var newsList = this.props.list;
+            var searchString = this.state.searchString.trim().toLowerCase();
+            if(searchString.length > 0){
+                newsList = newsList.filter(function(elem){
+                    return elem.name.toLowerCase().match( searchString );
+                });
+            }
+            return <div>
+                        <input className="searchStr" type="text" value={this.state.searchString} onChange={this.handleSearch} placeholder="begin..." /> 
+                            { newsList.map(function(elem){
+                                return <div className="news"><b>{elem.name}</b> <p> {elem.text} </p></div>
+                            }) }
+                    </div>;
+        }
+    });                                                                                                                                                            
+    var news = [
+    {
+        id: 1,
+        name: 'Lorem Ipsum',
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ac erat blandit, luctus ante nec, lobortis lacus. Donec in dolor velit. Vivamus ut mattis diam, eu egestas magna. Sed elementum eros quis euismod egestas. Donec consequat neque risus, eu scelerisque libero rhoncus in. Suspendisse consectetur id nisi sit amet placerat. Etiam finibus libero sit amet ipsum tristique, at tristique ligula eleifend.',
+    }, 
+    {
+        id: 2,
+        name: 'Vestibulum dapibus',
+        text: 'Phasellus ac purus sed nulla vestibulum egestas. Curabitur purus tortor, cursus porttitor tincidunt pellentesque, dictum ac eros.',
+    }, 
+    {
+        id: 3,
+        name: 'Vestibulum dapibus mauris arcu, in lobortis eros dictum sit amet.',
+        text: 'Aliquam vehicula ligula sit amet efficitur maximus.'
+    }
+    ];
+
+    ReactDOM.render(<NewsSearch list={ news } />, document.body);
+    </script>
+    </body>
+</html>
